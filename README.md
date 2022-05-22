@@ -1,5 +1,7 @@
 # Tesla Service Manual Scraper
 
+This script will download the Tesla Service Manual onto a local doc folder for offline access.
+
 ## Setup
 
 1. Go into `secrets.py` and fill out `tesla_account_email` and `tesla_account_password` with your account and password.
