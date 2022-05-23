@@ -64,7 +64,60 @@ for img in soup.find_all('img'):
   if img.get('src') not in img_urls:
     img_urls.append(img.get('src'))
 
-# Step 4: Set up Python pickle to save session.  You can stop the script and run it again to resume where you left off.
+# Step 4: Get the index.json for search functionality (thanks to TheNexusAvenger!) and other assorted supporting files
+headers = {
+"User-Agent":
+  "Mozilla/5.0 (Windows NT 6.3; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/44.0.2403.157 Safari/537.36"
+}
+s = requests.session()
+s.headers.update(headers)
+
+for cookie in driver.get_cookies():
+    c = {cookie['name']: cookie['value']}
+    s.cookies.update(c)
+
+r = s.get(base_url + 'index.json', allow_redirects=True)
+open("docs/index.json", 'wb').write(r.content)
+
+os.makedirs(os.path.dirname('docs/css/custom.css'), exist_ok=True)
+r = s.get(base_url + 'css/custom.css', allow_redirects=True)
+open("docs/css/custom.css", 'wb').write(r.content)
+
+os.makedirs(os.path.dirname('docs/js/vendor/jquery-3.5.1.min.js'), exist_ok=True)
+r = s.get(base_url + 'js/vendor/jquery-3.5.1.min.js', allow_redirects=True)
+open("docs/js/vendor/jquery-3.5.1.min.js", 'wb').write(r.content)
+
+r = s.get(base_url + 'js/vendor/jquery.magnific-popup.min.js', allow_redirects=True)
+open("docs/js/vendor/jquery.magnific-popup.min.js", 'wb').write(r.content)
+
+r = s.get(base_url + 'js/vendor/lunr.js', allow_redirects=True)
+open("docs/js/vendor/lunr.js", 'wb').write(r.content)
+
+r = s.get(base_url + 'js/search.js', allow_redirects=True)
+open("docs/js/search.js", 'wb').write(r.content)
+
+os.makedirs(os.path.dirname('docs/img/spritemap.svg'), exist_ok=True)
+r = s.get(base_url + 'img/spritemap.svg', allow_redirects=True)
+open("docs/img/spritemap.svg", 'wb').write(r.content)
+
+os.makedirs(os.path.dirname('docs/design-system/5.4.1/index.css'), exist_ok=True)
+r = s.get(base_url + 'design-system/5.4.1/index.css', allow_redirects=True)
+open("docs/design-system/5.4.1/index.css", 'wb').write(r.content)
+
+r = s.get(base_url + 'design-system/5.4.1/index.js', allow_redirects=True)
+open("docs/design-system/5.4.1/index.js", 'wb').write(r.content)
+
+os.makedirs(os.path.dirname('docs/tds-fonts/3.x/woff2/GothamSSm-Bold_web.woff2'), exist_ok=True)
+r = s.get(base_url + 'tds-fonts/3.x/woff2/GothamSSm-Bold_web.woff2', allow_redirects=True)
+open("docs/tds-fonts/3.x/woff2/GothamSSm-Bold_web.woff2", 'wb').write(r.content)
+
+r = s.get(base_url + 'tds-fonts/3.x/woff2/GothamSSm-Book_web.woff2', allow_redirects=True)
+open("docs/tds-fonts/3.x/woff2/GothamSSm-Book_web.woff2", 'wb').write(r.content)
+
+r = s.get(base_url + 'tds-fonts/3.x/woff2/GothamSSm-Medium_web.woff2', allow_redirects=True)
+open("docs/tds-fonts/3.x/woff2/GothamSSm-Medium_web.woff2", 'wb').write(r.content)
+
+# Step 5: Set up Python pickle to save session.  You can stop the script and run it again to resume where you left off.
 try:
   pickle_in = open("dict.pickle","rb")
   url_dict = pickle.load(pickle_in)
@@ -84,7 +137,7 @@ except:
   pickle_out.close()
   print("****** SESSION SAVED ******")
 
-# Step 5: Loop to get all the html pages, and store information about images to be downloaded later.
+# Step 6: Loop to get all the html pages, and store information about images to be downloaded later.
 while upcoming_urls:
   for url in upcoming_urls:
     if len(visited_urls) % 50 == 0:
@@ -123,7 +176,7 @@ while upcoming_urls:
       if img.get('src') not in img_urls:
         img_urls.append(img.get('src'))
 
-# Step 6: Save session after all html files collected
+# Step 7: Save session after all html files collected
 pickle_out = open("dict.pickle","wb")
 pickle.dump({
   'visited_urls': visited_urls,
@@ -135,14 +188,14 @@ pickle.dump({
 pickle_out.close()
 print("****** SESSION SAVED ******")
 
-# Step 7: Clean image URLs
+# Step 8: Clean image URLs
 for url in img_urls:
   if not isinstance(url, str):
     img_urls.remove(url)
   elif not url.startswith('GUID'):
     img_urls.remove(url)
 
-# Step 8: Sanity check on image URLs
+# Step 9: Sanity check on image URLs
 for url in img_urls:
   if url.endswith('jpg'):
     continue
@@ -155,7 +208,7 @@ for url in img_urls:
 number_of_images = len(set(img_urls))
 number_of_images_downloaded = 0
 
-# Step 9: Download images with direct requests
+# Step 10: Download images with direct requests
 headers = {
 "User-Agent":
   "Mozilla/5.0 (Windows NT 6.3; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/44.0.2403.157 Safari/537.36"
@@ -187,21 +240,6 @@ for url in set(img_urls):
     print("images: " + str(number_of_images))
     print("downloaded: " + str(number_of_images_downloaded))
     number_of_images_downloaded += 1
-
-# Step 10: Get the index.json for search functionality (thanks to TheNexusAvenger!)
-headers = {
-"User-Agent":
-  "Mozilla/5.0 (Windows NT 6.3; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/44.0.2403.157 Safari/537.36"
-}
-s = requests.session()
-s.headers.update(headers)
-
-for cookie in driver.get_cookies():
-    c = {cookie['name']: cookie['value']}
-    s.cookies.update(c)
-
-r = s.get(base_url + 'index.json', allow_redirects=True)
-open("docs/index.json", 'wb').write(r.content)
 
 time.sleep(25)
 driver.quit()
