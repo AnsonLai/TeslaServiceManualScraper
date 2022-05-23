@@ -11,6 +11,7 @@ from secrets import tesla_login
 
 # Step 0: Indicate which manual you plan to scrape, currently set to Model 3
 service_manual_index = "https://service.tesla.com/docs/Model3/ServiceManual/en-us/index.html"
+base_url = "https://service.tesla.com/docs/Model3/ServiceManual/en-us/"
 
 # Step 1: Set up the webdriver
 options = webdriver.ChromeOptions()
@@ -98,7 +99,7 @@ while upcoming_urls:
       pickle_out.close()
       print("****** SESSION SAVED ******")
     if url.startswith('GUID') and url.endswith('.html'):
-      driver.get('https://service.tesla.com/docs/Model3/ServiceManual/en-us/' + url)
+      driver.get(base_url + url)
     else:
       upcoming_urls.remove(url)
       continue
@@ -179,13 +180,28 @@ for url in set(img_urls):
         c = {cookie['name']: cookie['value']}
         s.cookies.update(c)
 
-    r = s.get('https://service.tesla.com/docs/Model3/ServiceManual/en-us/' + url, allow_redirects=True)
+    r = s.get(base_url + url, allow_redirects=True)
     open("docs/" + url, 'wb').write(r.content)
     visited_img_urls.append(url)
 
     print("images: " + str(number_of_images))
     print("downloaded: " + str(number_of_images_downloaded))
     number_of_images_downloaded += 1
+
+# Step 10: Get the index.json for search functionality (thanks to TheNexusAvenger!)
+headers = {
+"User-Agent":
+  "Mozilla/5.0 (Windows NT 6.3; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/44.0.2403.157 Safari/537.36"
+}
+s = requests.session()
+s.headers.update(headers)
+
+for cookie in driver.get_cookies():
+    c = {cookie['name']: cookie['value']}
+    s.cookies.update(c)
+
+r = s.get(base_url + 'index.json', allow_redirects=True)
+open("docs/index.json", 'wb').write(r.content)
 
 time.sleep(25)
 driver.quit()
