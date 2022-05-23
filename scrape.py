@@ -9,9 +9,11 @@ import pickle
 
 from secrets import tesla_login
 
-# Step 0: Indicate which manual you plan to scrape, currently set to Model 3
+# Step 0: Indicate which manual you plan to scrape, currently set to Model 3.  Also increase the login delay to give yourself time to login if you have 2FA or encounter other login issues.
 service_manual_index = "https://service.tesla.com/docs/Model3/ServiceManual/en-us/index.html"
 base_url = "https://service.tesla.com/docs/Model3/ServiceManual/en-us/"
+login_delay = 0
+
 
 # Step 1: Set up the webdriver
 options = webdriver.ChromeOptions()
@@ -32,7 +34,9 @@ stealth(driver,
 )
 
 # Step 2: Login to Tesla
+time.sleep(login_delay)
 driver = tesla_login(driver)
+time.sleep(login_delay)
 
 # Step 3: Get to the index page
 driver.get(service_manual_index)

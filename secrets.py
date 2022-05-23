@@ -1,5 +1,7 @@
 import time
 
+from scrape import login_delay
+
 # Step 0: Input your tesla account details
 tesla_account_email = "YOUR TESLA EMAIL HERE"
 tesla_account_password = "YOUR TESLA PASSWORD HERE"
