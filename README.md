@@ -1,6 +1,6 @@
 # Tesla Service Manual Scraper
 
-This script will download the Tesla Service Manual onto a local doc folder for offline access.
+This script will download the Tesla Service Manual onto a local doc folder for offline access.  This is geared for Windows only.
 
 ## Setup
 
@@ -33,3 +33,4 @@ This script will download the Tesla Service Manual onto a local doc folder for o
       * jquery-3.5.1.min.js
       * lunr.js
     * search.js
+* This script can likely be modified for MacOS easily, but I'm not familiar with how to install Selenium and chromedriver on MacOS.  **Windows only for now.**
