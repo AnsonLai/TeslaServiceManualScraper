@@ -17,9 +17,18 @@ This script will download the Tesla Service Manual onto a local doc folder for o
 * A full scrape of the Model 3 service manual **took over 30 minutes**.  This script is set up so that you can stop the script, and then continue later on.
 * Keep an eye out, Tesla's website seems to boot you out of logged in status after about 250 pages or 20 minutes.  So it might be worthwhile to run this on the side while keeping an eye on your login status.
 * Total file size of the Model 3 service manual is roughly **2.2GB**.
-* There is minimal styling applied on the service manual.  This script does not download those files.  If you want the full experience, you should download the following folders (seen in your browser's developer tools, under the Sources tab):
-  * css
-  * design-system
-  * img
-  * js
-    * *This one is useful, they use jQuery*
+* There is minimal styling applied on the service manual.  This script does not download those files.  If you want the full experience, you should download the following folders (seen in your browser's developer tools, under the Sources tab).  The JS folder is probably the most helpful.
+  * css/
+    * custom.css
+  * design-system/
+    * 5.4.1/
+      * index.css
+      * index.js
+  * img/
+    * spritemap.svg
+  * js/
+    * vendor/
+      * jquery.magnific-popup.min.js
+      * jquery-3.5.1.min.js
+      * lunr.js
+    * search.js

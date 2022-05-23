@@ -3,6 +3,7 @@ from selenium_stealth import stealth
 from bs4 import BeautifulSoup
 import time
 
+import os
 import requests
 import pickle
 
@@ -41,6 +42,8 @@ driver.switch_to.window(window1)
 
 source = driver.find_element_by_css_selector("html").get_attribute('outerHTML')
 
+
+os.makedirs(os.path.dirname('docs/index.html'), exist_ok=True)
 with open('docs/index.html', 'w', encoding='utf-8') as f:
   f.write(source)
 
@@ -54,8 +57,6 @@ soup = BeautifulSoup(source, 'html.parser')
 for link in soup.find_all('a'):
   if link.get('href') not in visited_urls and link.get('href') not in banned_urls and link.get('href') not in upcoming_urls:
     if link.get('href').startswith('GUID') and link.get('href').endswith('.html'):
-      # TODO: Remove this
-      pass
       upcoming_urls.append(link.get('href'))
 
 for img in soup.find_all('img'):
