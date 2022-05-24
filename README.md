@@ -1,6 +1,6 @@
 # Tesla Service Manual Scraper
 
-This script will download the Tesla Service Manual onto a local doc folder for offline access.  This is geared for Windows only.
+This script will download the Tesla Service Manual onto a local doc folder for offline access.  Windows and MacOS (thanks to CollinHeist).
 
 ## Setup
 
@@ -31,4 +31,4 @@ This script will download the Tesla Service Manual onto a local doc folder for o
 * A full scrape of the Model 3 service manual **took over 30 minutes**.  This script is set up so that you can stop the script, and then continue later on.
 * Keep an eye out, Tesla's website seems to boot you out of logged in status after about 250 pages or 20 minutes of continuous refreshing.  So it might be worthwhile to run this on the side while keeping an eye on your login status.
 * Total file size of the Model 3 service manual is roughly **2.2GB**.
-* This script can likely be modified for MacOS easily, but I'm not familiar with how to install Selenium and chromedriver on MacOS.  See issues below  **Windows only for now.**
+* On your first run, Tesla might throw a Captcha or lead to an error page.  Most of the time, just rerun and it'll work.
