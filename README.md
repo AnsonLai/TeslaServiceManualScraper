@@ -6,7 +6,7 @@ This script will download the Tesla Service Manual onto a local doc folder for o
 
 1. Go into `secrets.py` and fill out `tesla_account_email` and `tesla_account_password` with your account and password.
 2. Go into `scrape.py` and enter the index URL of the manual you want saved by changing `service_manual_index` and `base_url` variables.  It is defaulted to the Model 3.
-3. If you have 2FA or other challenges with login, consider changing `login_delay` to 2 or 3 seconds so you can manually enter your credentials.
+3. If you have 2FA or other challenges with login, consider changing `login_delay` in `secrets.py` to 2 or 3 seconds so you can manually enter your credentials.
 4. Setup Python 3.  See tutorial at: <https://wiki.python.org/moin/BeginnersGuide/Download>
 5. Setup selenium for Python.  To use the required stealth module, you **must** use the Chromium webdriver.  See tutorial at: <https://blog.testproject.io/2019/07/16/installing-selenium-webdriver-using-python-chrome/>
 6. Pip install the required packages (including `requests`, `selenium`, `selenium-stealth`, and `beautifulsoup4`).  On windows, you run the following commands on command prompt (CMD):
