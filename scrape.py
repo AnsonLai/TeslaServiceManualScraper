@@ -22,7 +22,7 @@ options = webdriver.ChromeOptions()
 
 options.add_experimental_option("excludeSwitches", ["enable-automation"])
 options.add_experimental_option('useAutomationExtension', False)
-driver = webdriver.Chrome(options=options, executable_path=r"chromedriver.exe")
+driver = webdriver.Chrome(options=options)
 
 stealth(driver,
   languages=["en-US", "en"],
