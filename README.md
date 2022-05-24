@@ -12,7 +12,7 @@ This script will download the Tesla Service Manual onto a local doc folder for o
 6. Pip install the required packages (including `requests`, `selenium`, `selenium-stealth`, and `beautifulsoup4`).  On windows, you run the following commands on command prompt (CMD):
     1.  `cd C:\Users\Anson\Desktop\TeslaServiceManualScraper` [template, the path should go wherever you saved this readme]
     2.  `run pip install -r requirements.txt`
-7. Before scraping, it is always a good idea to use a VPN of some sort to avoid any issues with your account.  I didn't run into any issues personally, but you can never be too safe.
+7. Before scraping, it is always a good idea to use a VPN of some sort to avoid any issues with your account.  I didn't run into any issues personally, but you can never be too safe.  It is also worthwhile to open a new account to claim the manuals instead of using a personal account.
 8. Run `scrape.py` by typing `python scrape.py`
 
 ## Viewing offline
