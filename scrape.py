@@ -4,6 +4,7 @@ from bs4 import BeautifulSoup
 import time
 
 import os
+import re
 import requests
 import pickle
 
@@ -45,9 +46,13 @@ driver.switch_to.window(window1)
 
 source = driver.find_element_by_css_selector("html").get_attribute('outerHTML')
 
+mpulse_tracker = r'<script.+go.mpulse.+</script>'
+google_tracker = r'<script.+googletag.+</script>'
 
 os.makedirs(os.path.dirname('docs/index.html'), exist_ok=True)
 with open('docs/index.html', 'w', encoding='utf-8') as f:
+  source = re.sub(mpulse_tracker, '', source)
+  source = re.sub(google_tracker, '', source)
   f.write(source)
 
 visited_urls = ['index.html']
@@ -161,6 +166,9 @@ while upcoming_urls:
     source = driver.find_element_by_css_selector("html").get_attribute('outerHTML')
 
     with open('docs/' + url, 'w', encoding='utf-8') as f:
+      source = re.sub(mpulse_tracker, '', source)
+      source = re.sub(google_tracker, '', source)
+
       f.write(source)
       visited_urls.append(url)
       upcoming_urls.remove(url)
