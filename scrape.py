@@ -11,7 +11,7 @@ import pickle
 
 from secrets import tesla_login
 
-# Step 0: Indicate which manual you plan to scrape, currently set to Model 3.  Also increase the login delay to give yourself time to login if you have 2FA or encounter other login issues.
+# TODO: Indicate which manual you plan to scrape, currently set to Model 3.  Also increase the login delay in secrets.py to give yourself time to login if you have 2FA or encounter other login issues.
 service_manual_index = "https://service.tesla.com/docs/Model3/ServiceManual/en-us/index.html"
 base_url = "https://service.tesla.com/docs/Model3/ServiceManual/en-us/"
 
@@ -42,10 +42,10 @@ class Webdriver:
     self.driver.quit()
     run()
   def get_index(self):
-    # Step 2: Login to Tesla
+    # Login to Tesla
     driver = tesla_login(self.driver)
 
-    # Step 3: Get to the index page
+    # Get to the index page
     driver.get(service_manual_index)
     time.sleep(10)
 
@@ -61,7 +61,7 @@ class Webdriver:
     if 'index.html' not in visited_urls:
       visited_urls.append('index.html')
   def get_support_files(self):
-    # Step 4: Get the index.json for search functionality (thanks to TheNexusAvenger!) and other assorted supporting files
+    # Get the index.json for search functionality (thanks to TheNexusAvenger!) and other assorted supporting files
     headers = {
     "User-Agent":
       "Mozilla/5.0 (Windows NT 6.3; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/44.0.2403.157 Safari/537.36"
@@ -114,18 +114,20 @@ class Webdriver:
     r = s.get(base_url + 'tds-fonts/3.x/woff2/GothamSSm-Medium_web.woff2', allow_redirects=True)
     open("docs/tds-fonts/3.x/woff2/GothamSSm-Medium_web.woff2", 'wb').write(r.content)
   def get_html(self):
-    # Step 6: Loop to get all the html pages, and store information about images to be downloaded later.
+    # Loop to get all the html pages, and store information about images to be downloaded later.
     while upcoming_urls:
       for url in upcoming_urls:
         if len(visited_urls) % 50 == 0:
           save_session()
+        if len(visited_urls) % 175 == 0:
+          self.restart_scrape()
         if url.startswith('GUID') and url.endswith('.html'):
           self.driver.get(base_url + url)
         else:
           upcoming_urls.remove(url)
           continue
-        source = self.driver.find_element_by_css_selector("html").get_attribute('outerHTML')
 
+        source = self.driver.find_element_by_css_selector("html").get_attribute('outerHTML')
         if not check_source_validity(source):
           self.restart_scrape()
 
@@ -144,9 +146,10 @@ class Webdriver:
         append_upcoming_and_img_urls(source)
 
   def get_imgs(self):
+    # Download images with direct requests
     number_of_images = len(set(img_urls))
     number_of_images_downloaded = len(set(visited_img_urls))
-    # Step 9: Download images with direct requests
+    
     headers = {
     "User-Agent":
       "Mozilla/5.0 (Windows NT 6.3; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/44.0.2403.157 Safari/537.36"
@@ -189,7 +192,7 @@ def check_source_validity(source):
 
 def new_session():
   global visited_urls, banned_urls, upcoming_urls, img_urls, visited_img_urls
-  # Step 5: Set up Python pickle to save session.  You can stop the script and run it again to resume where you left off.
+  # Set up Python pickle to start/load a session.  You can stop the script and run it again to resume where you left off.
   try:
     pickle_in = open("dict.pickle","rb")
     url_dict = pickle.load(pickle_in)
@@ -212,6 +215,7 @@ def new_session():
     print("****** SESSION CREATED ******")
   
 def save_session():
+  # Use pickle to load session
   pickle_out = open("dict.pickle","wb")
   pickle.dump({
     'visited_urls': visited_urls,
@@ -224,14 +228,14 @@ def save_session():
   print("****** SESSION SAVED ******")
 
 def clean_img_urls():
-  # Step 7: Clean image URLs
+  # Clean image URLs
   for url in img_urls:
     if not isinstance(url, str):
       img_urls.remove(url)
     elif not url.startswith('GUID'):
       img_urls.remove(url)
 
-  # Step 8: Sanity check on image URLs
+  # Sanity check on image URLs
   for url in img_urls:
     if url.endswith('jpg'):
       continue
