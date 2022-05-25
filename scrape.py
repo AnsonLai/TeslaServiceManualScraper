@@ -119,8 +119,6 @@ class Webdriver:
       for url in upcoming_urls:
         if len(visited_urls) % 50 == 0:
           save_session()
-        if len(visited_urls) % 175 == 0:
-          self.restart_scrape()
         if url.startswith('GUID') and url.endswith('.html'):
           self.driver.get(base_url + url)
         else:
@@ -144,6 +142,8 @@ class Webdriver:
           print("images: " + str(len(set(img_urls))))
 
         append_upcoming_and_img_urls(source)
+        if len(visited_urls) % 150 == 0:
+          self.restart_scrape()
 
   def get_imgs(self):
     # Download images with direct requests
