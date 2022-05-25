@@ -38,8 +38,9 @@ class Webdriver:
       renderer="Intel Iris OpenGL Engine",
       fix_hairline=True,
     )
-  def quit(self):
+  def restart_scrape(self):
     self.driver.quit()
+    run()
   def get_index(self):
     # Step 2: Login to Tesla
     driver = tesla_login(self.driver)
@@ -116,7 +117,7 @@ class Webdriver:
     # Step 6: Loop to get all the html pages, and store information about images to be downloaded later.
     while upcoming_urls:
       for url in upcoming_urls:
-        if len(visited_urls) % 5 == 0:
+        if len(visited_urls) % 50 == 0:
           save_session()
         if url.startswith('GUID') and url.endswith('.html'):
           self.driver.get(base_url + url)
@@ -124,6 +125,9 @@ class Webdriver:
           upcoming_urls.remove(url)
           continue
         source = self.driver.find_element_by_css_selector("html").get_attribute('outerHTML')
+
+        if not check_source_validity(source):
+          self.restart_scrape()
 
         with open('docs/' + url, 'w', encoding='utf-8') as f:
           source = re.sub(mpulse_tracker, '', source)
