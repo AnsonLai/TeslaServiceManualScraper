@@ -14,6 +14,7 @@ This script will download the Tesla Service Manual onto a local doc folder for o
     2.  `run pip install -r requirements.txt`
 7. Before scraping, it is always a good idea to use a VPN of some sort to avoid any issues with your account.  I didn't run into any issues personally, but you can never be too safe.  It is also worthwhile to open a new account to claim the manuals instead of using a personal account.
 8. Run `scrape.py` by typing `python scrape.py`
+9. The browser will automatically restart when it encounters problems with the files or login status.
 
 ## Viewing offline
 
@@ -33,8 +34,3 @@ This script will download the Tesla Service Manual onto a local doc folder for o
 * Keep an eye out, Tesla's website seems to boot you out of logged in status after about 250 pages or 20 minutes of continuous refreshing.  So it might be worthwhile to run this on the side while keeping an eye on your login status.
 * Total file size of the Model 3 service manual is roughly **2.2GB**.
 * On your first run, Tesla might throw a Captcha or lead to an error page.  Most of the time, just rerun and it'll work.
-
-## Roadmap
-
-1. Run a check to ensure no "no access" html files are downloaded.
-2. Restart the script every 200 files or so.
