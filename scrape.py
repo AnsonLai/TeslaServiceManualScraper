@@ -115,6 +115,7 @@ class Webdriver:
     open("docs/tds-fonts/3.x/woff2/GothamSSm-Medium_web.woff2", 'wb').write(r.content)
   def get_html(self):
     # Loop to get all the html pages, and store information about images to be downloaded later.
+    error_count = 0
     while upcoming_urls:
       for url in upcoming_urls:
         if len(visited_urls) % 50 == 0:
@@ -128,7 +129,9 @@ class Webdriver:
 
         source = self.driver.find_element_by_css_selector("html").get_attribute('outerHTML')
         if not check_source_validity(source):
-          self.restart_scrape()
+          error_count += 1
+          if error_count > 10:
+            self.restart_scrape()
 
         with open('docs/' + url, 'w', encoding='utf-8') as f:
           source = re.sub(mpulse_tracker, '', source)
