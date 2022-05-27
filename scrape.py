@@ -140,11 +140,12 @@ class Webdriver:
           upcoming_urls.remove(url)
           print("visited: " + str(len(visited_urls)))
           print("upcoming: " + str(len(upcoming_urls)))
-          print("images: " + str(len(set(img_urls))))
+          print("images to be downloaded: " + str(len(set(img_urls))))
 
         append_upcoming_and_img_urls(source)
 
-        if len(visited_urls) % 151 == 0:
+        if len(visited_urls) % 150 == 0:
+          save_session()
           self.restart_scrape()
 
   def get_imgs(self):
