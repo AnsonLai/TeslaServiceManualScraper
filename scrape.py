@@ -12,8 +12,8 @@ import pickle
 from secrets import tesla_login
 
 # TODO: Indicate which manual you plan to scrape, currently set to Model 3.  Also increase the login delay in secrets.py to give yourself time to login if you have 2FA or encounter other login issues.
-service_manual_index = "https://service.tesla.com/docs/Model3/ServiceManual/en-us/index.html"
-base_url = "https://service.tesla.com/docs/Model3/ServiceManual/en-us/"
+service_manual_index = "https://service.tesla.com/docs/ModelS/ServiceManual/en-us/index.html"
+base_url = "https://service.tesla.com/docs/ModelS/ServiceManual/en-us/"
 
 visited_urls = []
 banned_urls = []
@@ -192,6 +192,8 @@ def append_upcoming_and_img_urls(source):
 
 def check_source_validity(source):
   if 'design-system/4.x/index.css' in source and '<title>Tesla Service</title>' in source:
+    return False
+  elif '<title>Access Denied</title>' in source:
     return False
   else:
     return True

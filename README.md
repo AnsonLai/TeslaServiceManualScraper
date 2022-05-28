@@ -5,7 +5,7 @@ This script will download the Tesla Service Manual onto a local doc folder for o
 ## Setup
 
 1. Go into `secrets.py` and fill out `tesla_account_email` and `tesla_account_password` with your account and password.
-2. Go into `scrape.py` and enter the index URL of the manual you want saved by changing `service_manual_index` and `base_url` variables.  It is defaulted to the Model 3.
+2. Go into `scrape.py` and enter the index URL of the manual you want saved by changing `service_manual_index` and `base_url` variables.  It is defaulted to the Model S (2012-2020), but confirmed to work on the Model 3 too.
 3. If you have 2FA or other challenges with login, consider changing `login_delay` in `secrets.py` to 2 or 3 seconds so you can manually enter your credentials.
 4. Setup Python 3.  See tutorial at: <https://wiki.python.org/moin/BeginnersGuide/Download>
 5. Setup selenium for Python.  To use the required stealth module, you **must** use the Chromium webdriver.  See tutorial at: <https://blog.testproject.io/2019/07/16/installing-selenium-webdriver-using-python-chrome/>
@@ -34,3 +34,5 @@ This script will download the Tesla Service Manual onto a local doc folder for o
 * Keep an eye out, Tesla's website seems to boot you out of logged in status after about 250 pages or 20 minutes of continuous refreshing.  So it might be worthwhile to run this on the side while keeping an eye on your login status.
 * Total file size of the Model 3 service manual is roughly **2.2GB**.
 * On your first run, Tesla might throw a Captcha or lead to an error page.  Most of the time, just rerun and it'll work.
+* If you get an "Access Denied" page, Tesla has likely blocked you.  Usually that block expires in 10 minutes.
+* If you need to reset for any reason (scraping another manual), you need to delete or move the `docs/` folder and the `dict.picle` file.
