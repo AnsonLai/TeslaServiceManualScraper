@@ -182,13 +182,15 @@ class Webdriver:
 def append_upcoming_and_img_urls(source):
   soup = BeautifulSoup(source, 'html.parser')
   for link in soup.find_all('a'):
-    if link.get('href') not in visited_urls and link.get('href') not in banned_urls and link.get('href') not in upcoming_urls:
-      if link.get('href').startswith('GUID') and link.get('href').endswith('.html'):
-        upcoming_urls.append(link.get('href'))
+    if type(link.get('href')) == str:
+      if link.get('href') not in visited_urls and link.get('href') not in banned_urls and link.get('href') not in upcoming_urls:
+        if link.get('href').startswith('GUID') and link.get('href').endswith('.html'):
+          upcoming_urls.append(link.get('href'))
 
   for img in soup.find_all('img'):
     if img.get('src') not in img_urls:
-      img_urls.append(img.get('src'))
+      if type(img.get('src')) == str:
+        img_urls.append(img.get('src'))
 
 def check_source_validity(source):
   if 'design-system/4.x/index.css' in source and '<title>Tesla Service</title>' in source:
