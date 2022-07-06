@@ -1,3 +1,5 @@
+from selenium.webdriver.common.by import By
+
 import time
 
 # TODO: Input your tesla account details
@@ -7,13 +9,12 @@ login_delay = 0
 
 def tesla_login(driver):
   driver.get("https://tesla.com/teslaaccount")
-  driver.find_element_by_css_selector("#form-input-identity").send_keys(tesla_account_email)
+  driver.find_element(By.ID, "form-input-identity").send_keys(tesla_account_email)
   time.sleep(2 + login_delay)
-  driver.find_element_by_css_selector("#form-submit-continue").click()
+  driver.find_element(By.ID, "form-submit-continue").click()
   time.sleep(2 + login_delay)
-  driver.find_element_by_css_selector("#form-input-credential").send_keys(tesla_account_password)
+  driver.find_element(By.ID, "form-input-credential").send_keys(tesla_account_password)
   time.sleep(2 + login_delay)
-  driver.find_element_by_css_selector("#form-submit-continue").click()
+  driver.find_element(By.ID, "form-submit-continue").click()
 
   return driver
-  
