@@ -1,5 +1,6 @@
 from distutils.command.clean import clean
 from selenium import webdriver
+from selenium.webdriver.common.by import By
 from selenium_stealth import stealth
 from bs4 import BeautifulSoup
 import time
@@ -51,7 +52,7 @@ class Webdriver:
 
     window1 = driver.window_handles[1]
     driver.switch_to.window(window1)
-    source = driver.find_element_by_css_selector("html").get_attribute('outerHTML')
+    source = driver.find_element(By.TAG_NAME, "html").get_attribute("outerHTML")
     append_upcoming_and_img_urls(source)
     os.makedirs(os.path.dirname('docs/index.html'), exist_ok=True)
     with open('docs/index.html', 'w', encoding='utf-8') as f:
@@ -127,7 +128,7 @@ class Webdriver:
           upcoming_urls.remove(url)
           continue
 
-        source = self.driver.find_element_by_css_selector("html").get_attribute('outerHTML')
+        source = self.driver.find_element(By.TAG_NAME, "html").get_attribute("outerHTML")
         if not check_source_validity(source):
           error_count += 1
           if error_count > 10:
